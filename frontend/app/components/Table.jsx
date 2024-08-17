@@ -10,6 +10,7 @@ import axios from "axios";
 import { MdDeleteOutline } from "react-icons/md";
 import toast from "react-hot-toast";
 import SuccessPopup from "./Success";
+import Link from "next/link";
 
 const Table = () => {
   const {
@@ -24,11 +25,14 @@ const Table = () => {
   const router = useRouter();
 
   const [discount, setDiscount] = useState(false);
+
   const [input, setInput] = useState("");
+
   const [showPopup, setShowPopup] = useState(false);
 
   const handleQuntity = async (cart, val) => {
     if (val <= 0) return;
+    console.log(cart, val);
     const newArr = cartItems.map((c, i) =>
       c.productId == cart.productId ? { ...c, quantity: val } : c
     );
@@ -65,7 +69,7 @@ const Table = () => {
     if (discount) {
       if (input === "10PERDISC") {
         const sum = totalSum * 0.9;
-        res.discountSum = sum.toFixed(2);
+        res.discountSum = sum;
       } else if (input === "10OFFDISC") {
         const sum = totalSum - 10;
         res.discountSum = sum.toFixed(2);
@@ -74,19 +78,20 @@ const Table = () => {
       res.discountSum = totalSum.toFixed(2);
     }
     res.actualSum = totalSum.toFixed(2);
+    console.log("RES", res);
     return res;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (input === "10PERDISC") {
-      toast.success("10% discount applied");
+      toast.success("10% discountapplied");
       setDiscount(true);
     } else if (input === "10OFFDISC") {
-      toast.success("₹10 discount applied");
+      toast.success("10₹ discountapplied");
       setDiscount(true);
     } else {
-      toast.error("Invalid discount coupon");
+      toast.error("Invalied discount coupon");
     }
   };
 
@@ -109,49 +114,55 @@ const Table = () => {
 
   if (authenticated) {
     return (
-      <div className="overflow-x-auto">
+      <div>
         {showPopup && (
           <SuccessPopup
-            message="Checkout successfully completed"
+            message="checkout successful"
             setShowPopup={setShowPopup}
           />
         )}
-        <table className="min-w-full bg-white">
+        <table
+          border="1"
+          cellpadding="10"
+          cellspacing="0"
+          className="w-full  pb-[200px] md:pb-0 "
+        >
           <thead>
             <tr>
-              <th className="text-start px-4 py-2">S.No</th>
-              <th className="text-start px-4 py-2">Product Name</th>
-              <th className="text-start px-4 py-2">Image</th>
-              <th className="text-start px-4 py-2">Price</th>
-              <th className="text-start px-4 py-2">Quantity</th>
-              <th className="text-start px-4 py-2">Total Price</th>
-              <th className="text-start px-4 py-2">Actions</th>
+              <th className="text-start">S.No</th>
+              <th className="text-start">Product name</th>
+              <th className="text-start">Image</th>
+              <th className="text-start">Price</th>
+              <th className="text-start">Quantity</th>
+              <th className="text-start">Total Price</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="pb-[200px] md:pb-0">
             {cartItems?.map((c, i) => {
               return (
                 <tr key={i} className="border-t h-[100px] border-orange-900">
-                  <td className="px-4 py-2">{i + 1}</td>
-                  <td className="px-4 py-2">
-                    {c.title?.length > 25
-                      ? `${c.title.slice(0, 25)}...`
-                      : c.title}
+                  <td>{i + 1}</td>
+                  <td>
+                    <Link href={`/product/${c.productId}`}>
+                      {c.title?.length > 25
+                        ? `${c.title.slice(0, 25)}...`
+                        : c.title}
+                    </Link>
                   </td>
-                  <td className="px-4 py-2">
+                  <td>
                     <img
                       src={c.image}
-                      alt="product"
-                      className="w-[100px] h-[80px] bg-white rounded-md object-contain"
+                      alt="image"
+                      className=" p-2 md:p-6 w-[100px] h-[80px] bg-white rounded-md object-contain"
                     />
                   </td>
-                  <td className="px-4 py-2">₹{c.price}</td>
-                  <td className="px-4 py-2">
-                    <div className="flex items-center gap-2">
+                  <td>₹{c.price}</td>
+                  <td className=" h-full  gap-2  justify-start my-auto  items-center text-sm">
+                    <div className="flex justify-start items-center gap-2">
                       <button
                         onClick={() => handleQuntity(c, c.quantity - 1)}
-                        disabled={c.quantity <= 1}
-                        className={`px-3 border border-orange-400 rounded-lg font-extrabold py-2 ${
+                        disabled={c.quantity <= 1 ? true : false}
+                        className={`px-3  border border-orange-400 rounded-lg font-extrabold py-2 ${
                           c.quantity <= 1 && "opacity-50"
                         }`}
                       >
@@ -160,14 +171,14 @@ const Table = () => {
                       <p className="font-bold">{c.quantity}</p>
                       <button
                         onClick={() => handleQuntity(c, c.quantity + 1)}
-                        className="px-3 py-2 border border-orange-400 rounded-lg font-extrabold text-center"
+                        className={`px-3 py-2  border border-orange-400 rounded-lg font-extrabold text-center`}
                       >
                         <IoMdAdd />
                       </button>
                     </div>
                   </td>
-                  <td className="px-4 py-2">₹{c.quantity * c.price}</td>
-                  <td className="px-4 py-2">
+                  <td className="px-4">₹{c.quantity * c.price}</td>
+                  <td>
                     <MdDeleteOutline
                       onClick={() => handleDelete(c)}
                       className="text-red-500 text-2xl cursor-pointer"
@@ -176,9 +187,15 @@ const Table = () => {
                 </tr>
               );
             })}
-            <tr className="mt-2">
-              <td colSpan="6" className="border-t border-black px-4 py-2">
-                <div className="flex flex-col items-start gap-4">
+
+            <tr className="mt-2  ">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td className=" hidden md:block border-t border-black w-[120px]">
+                <div className="flex flex-col justify-start items-start gap-4 ">
                   <p>
                     ₹
                     {discount ? (
@@ -190,9 +207,67 @@ const Table = () => {
                       sum().actualSum
                     )}
                   </p>
+                  <div className="flex flex-col justify-start items-start gap-4">
+                    <div className="text-xs">
+                      <p>* use "10PERDISC" for 10% off</p>
+                      <p>* use "10OFFDISC" for 10₹ off </p>
+                    </div>
+                    <form className="flex gap-4">
+                      <input
+                        type="text"
+                        className="bg-transparent border-b-2 border-black focus:border-none p-2 w-[120px]"
+                        value={input}
+                        onChange={(e) => setInput(e.target.value)}
+                      />
+
+                      {discount ? (
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setDiscount(false);
+                            toast.success("discount removed");
+                          }}
+                          className="px-4 py-1 border border-red-800 rounded-2xl bg-red-700 text-white text-xs"
+                        >
+                          remove
+                        </button>
+                      ) : (
+                        <button
+                          onClick={handleSubmit}
+                          className="px-4 py-2 border border-orange-800 rounded-xl bg-orange-200"
+                        >
+                          {" "}
+                          apply
+                        </button>
+                      )}
+                    </form>
+                    <p>{}</p>
+                    <button
+                      className="px-6 border-2 border-orange-600 bg-orange-400 text-white rounded-3xl py-4 flex gap-4"
+                      onClick={() => setShowPopup(true)}
+                    >
+                      <p className="whitespace-nowrap">Check out</p>{" "}
+                      <span className="mx-4">₹{sum().discountSum}</span>{" "}
+                    </button>
+                  </div>
+                </div>
+              </td>
+              <div className=" fixed md:hidden bottom-0 left-0 z-40 p-4 w-full border-t rounded-t-lg shadow flex flex-col justify-start items-start gap-4  bg-[#fff8eb]">
+                <p className=" w-full text-center">
+                  Total - ₹
+                  {discount ? (
+                    <span className="gap-2">
+                      <span className="line-through">{sum().actualSum}</span>{" "}
+                      <span className="italic">₹{sum().discountSum}</span>{" "}
+                    </span>
+                  ) : (
+                    sum().actualSum
+                  )}
+                </p>
+                <div className="  w-full   flex   flex-col justify-center items-center gap-4 ">
                   <div className="text-xs">
                     <p>* use "10PERDISC" for 10% off</p>
-                    <p>* use "10OFFDISC" for ₹10 off</p>
+                    <p>* use "10OFFDISC" for 10₹ off </p>
                   </div>
                   <form className="flex gap-4">
                     <input
@@ -201,41 +276,44 @@ const Table = () => {
                       value={input}
                       onChange={(e) => setInput(e.target.value)}
                     />
+
                     {discount ? (
                       <button
                         onClick={(e) => {
                           e.preventDefault();
                           setDiscount(false);
-                          toast.success("Discount removed");
+                          toast.success("discount removed");
                         }}
                         className="px-4 py-1 border border-red-800 rounded-2xl bg-red-700 text-white text-xs"
                       >
-                        Remove
+                        remove
                       </button>
                     ) : (
                       <button
                         onClick={handleSubmit}
                         className="px-4 py-2 border border-orange-800 rounded-xl bg-orange-200"
                       >
-                        Apply
+                        {" "}
+                        apply
                       </button>
                     )}
                   </form>
-                  <button className="px-6 border-2 border-orange-600 bg-orange-400 text-white rounded-3xl py-2">
-                    Check out{" "}
-                    <span className="mx-4" onClick={() => setShowPopup(true)}>
-                      ₹{sum().discountSum}
-                    </span>
+                  <p>{}</p>
+                  <button
+                    className="px-6 border-2 border-orange-600 bg-orange-400 text-white rounded-3xl py-2 flex "
+                    onClick={() => setShowPopup(true)}
+                  >
+                    Check out <span className="mx-4">₹{sum().discountSum}</span>{" "}
                   </button>
                 </div>
-              </td>
+              </div>
             </tr>
           </tbody>
         </table>
       </div>
     );
   }
-  return null;
+  return <></>;
 };
 
 export default Table;

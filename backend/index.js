@@ -17,7 +17,7 @@ connectDB();
 // Use cors middleware
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "https://fyi-store.vercel.app/",
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true,
   })

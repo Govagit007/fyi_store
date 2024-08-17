@@ -104,9 +104,9 @@ const FeaturedProducts = () => {
       <h2 className=" text-3xl font-semibold text-orange-400  border-b border-orange-300 pb-2">
         Try New{" "}
       </h2>
-      <div className="w-full justify-center flex py-8 px-12">
+      <div className="w-full justify-center flex py-8 px-6 text-sm md:text-base md:px-12">
         {products.length > 0 ? (
-          <div className="w-full grid grid-cols-1 md:grid-cols-4 gap-6 px-0 md:px-6  ">
+          <div className="w-full grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 px-0 md:px-6  ">
             {products?.map((p, i) => {
               return (
                 <div
@@ -119,7 +119,7 @@ const FeaturedProducts = () => {
                     className="w-full aspect-[5/4] object-contain bg-white rounded-xl p-10   transition-all duration-300 "
                   />
                   <div className="w-full flex flex-col justify-between  flex-1 items-start gap-2">
-                    <h2 className=" break-words  font-extralight ">
+                    <h2 className=" break-words text-xs md:text-sm  font-extralight ">
                       {p.title.length > 50
                         ? `${p.title.slice(0, 50)}...`
                         : p.title}

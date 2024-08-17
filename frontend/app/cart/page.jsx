@@ -6,7 +6,7 @@ const page = () => {
   return (
     <div className="pt-20 bg-[#fff8eb] w-screen h-screen overflow-y-scroll">
       <Header />
-      <div className="w-full p-8 md:p-16">
+      <div className="w-full p-4 md:p-16 pb-[250px] md:pb-0">
         <Table />
       </div>
     </div>

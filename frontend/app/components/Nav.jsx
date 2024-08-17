@@ -80,7 +80,7 @@ const Nav = () => {
           })}
           <button onClick={handleLogout}>Logout</button>
         </nav>
-        <nav className="sm:block md:hidden px-4">
+        <nav className="sm:block md:hidden px-4 z-50">
           <RxHamburgerMenu
             className=" fixed text-orange-400 text-2xl  top-4 left-4"
             onClick={() => setOpenMenu(true)}
@@ -91,16 +91,26 @@ const Nav = () => {
               transform: openMen && "translateX(0)",
             }}
           >
-            <div className="flex flex-col relative font-medium  py-12 w-[200px] text-[#82601c]">
+            <div className="flex flex-col relative font-medium  py-12 w-[200px] text-[#4a4336]">
               {navbuttons.map((n, i) => {
                 return (
                   <Link
                     href={n.to}
                     key={i}
-                    className="flex justify-start items-center gap-1  w-full px-6 py-4 hover:bg-[#ffc34a]"
+                    className="flex justify-start items-center gap-1  w-full px-6 py-4 hover:bg-[#ffc34a] relative"
                   >
                     <div className="text-lg">{n.icon}</div>
-                    <p className="text-xs">{n.name}</p>
+                    <p className="text-xs relative">
+                      {n.name}
+                      {n.name === "Cart" && cartItems.length > 0 && (
+                        <div className="absolute -right-4 -top-4  ">
+                          <div className="relative w-6 h-6  font-semibold flex justify-center items-center text-sm aspect-square  rounded-full  bg-white border-2 border-orange-600 text-orange-700">
+                            {cartItems.length}
+                            {/* <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  animate-ping  border-2 border-orange-500 w-2 h-2 bg-orange-500 rounded-full"></div> */}
+                          </div>
+                        </div>
+                      )}
+                    </p>
                   </Link>
                 );
               })}
@@ -111,7 +121,16 @@ const Nav = () => {
               <button onClick={handleLogout}>Logout</button>
             </div>
           </div>
-          <SlBasket className="text-2xl text-neutral-50" />
+          <Link href={"/cart"} className="relative text-orange-700">
+            <SlBasket className="text-2xl text-orange-500" />
+            {cartItems.length > 0 && (
+              <div className="absolute -right-4 -top-4  ">
+                <div className="relative w-6 h-6  font-semibold flex justify-center items-center text-xs aspect-square  rounded-full  bg-white border-2 border-orange-600 text-orange-700">
+                  {cartItems.length}
+                </div>
+              </div>
+            )}
+          </Link>
         </nav>
       </>
     );
