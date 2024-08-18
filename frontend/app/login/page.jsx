@@ -9,6 +9,7 @@ import axios from "axios";
 import { BACKEND_SERVER } from "../constants/Constant";
 import Cookies from "js-cookie";
 import toast from "react-hot-toast";
+import Loader from "../components/Loader";
 
 const Page = () => {
   const { authenticated, setAuthenticated, user, setUser } =
@@ -18,10 +19,13 @@ const Page = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
 
+  const [loader, setLoader] = useState(false);
+
   const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoader(true);
     if (!email || !password) {
       return toast.error("Please fill all fields");
     }
@@ -49,17 +53,23 @@ const Page = () => {
     } catch (error) {
       console.log(error);
       toast.error("Login failed. Please check your credentials.");
+    } finally {
+      setLoader(false);
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-orange-100 p-4 sm:p-6 md:p-8">
       <Header />
-      <div className="bg-white p-4 sm:p-6 md:p-8 rounded-lg shadow-lg max-w-xs sm:max-w-md w-full">
+      <div className="bg-white p-4 sm:p-6 md:p-8 text-sm md:text-base rounded-lg shadow-lg max-w-xs sm:max-w-md w-full">
         <h2 className="text-xl sm:text-2xl font-bold text-orange-600 mb-4 sm:mb-6 text-center">
           Login
         </h2>
         <form onSubmit={handleSubmit}>
+          <div className="flex flex-col text-xs">
+            <p>* venu@gmail.com</p>
+            <p>* venu</p>
+          </div>
           <div className="mb-3 sm:mb-4">
             <label
               htmlFor="email"
@@ -90,12 +100,18 @@ const Page = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <button
-            type="submit"
-            className="w-full bg-orange-600 text-white py-2 rounded-lg font-semibold hover:bg-orange-700 transition duration-300"
-          >
-            Login
-          </button>
+          {loader ? (
+            <div className="w-full bg-orange-600 text-white py-2 rounded-lg font-semibold hover:bg-orange-700 transition duration-300 flex justify-center items-center">
+              <Loader />
+            </div>
+          ) : (
+            <button
+              type="submit"
+              className="w-full bg-orange-600 text-white py-2 rounded-lg font-semibold hover:bg-orange-700 transition duration-300"
+            >
+              Login
+            </button>
+          )}
         </form>
         <p className="mt-4 sm:mt-6 text-center text-orange-600">
           Don't have an account?{" "}

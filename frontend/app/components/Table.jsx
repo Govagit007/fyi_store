@@ -69,7 +69,7 @@ const Table = () => {
     if (discount) {
       if (input === "10PERDISC") {
         const sum = totalSum * 0.9;
-        res.discountSum = sum;
+        res.discountSum = sum.toFixed(2);
       } else if (input === "10OFFDISC") {
         const sum = totalSum - 10;
         res.discountSum = sum.toFixed(2);
@@ -125,7 +125,7 @@ const Table = () => {
           border="1"
           cellpadding="10"
           cellspacing="0"
-          className="w-full  pb-[200px] md:pb-0 "
+          className="w-full   "
         >
           <thead>
             <tr>
@@ -177,7 +177,7 @@ const Table = () => {
                       </button>
                     </div>
                   </td>
-                  <td className="px-4">₹{c.quantity * c.price}</td>
+                  <td className="px-4">₹{(c.quantity * c.price).toFixed(2)}</td>
                   <td>
                     <MdDeleteOutline
                       onClick={() => handleDelete(c)}
@@ -188,7 +188,7 @@ const Table = () => {
               );
             })}
 
-            <tr className="mt-2  ">
+            {/* <tr className="mt-2  ">
               <td></td>
               <td></td>
               <td></td>
@@ -252,64 +252,64 @@ const Table = () => {
                   </div>
                 </div>
               </td>
-              <div className=" fixed md:hidden bottom-0 left-0 z-40 p-4 w-full border-t rounded-t-lg shadow flex flex-col justify-start items-start gap-4  bg-[#fff8eb]">
-                <p className=" w-full text-center">
-                  Total - ₹
-                  {discount ? (
-                    <span className="gap-2">
-                      <span className="line-through">{sum().actualSum}</span>{" "}
-                      <span className="italic">₹{sum().discountSum}</span>{" "}
-                    </span>
-                  ) : (
-                    sum().actualSum
-                  )}
-                </p>
-                <div className="  w-full   flex   flex-col justify-center items-center gap-4 ">
-                  <div className="text-xs">
-                    <p>* use "10PERDISC" for 10% off</p>
-                    <p>* use "10OFFDISC" for 10₹ off </p>
-                  </div>
-                  <form className="flex gap-4">
-                    <input
-                      type="text"
-                      className="bg-transparent border-b-2 border-black focus:border-none p-2 w-[120px]"
-                      value={input}
-                      onChange={(e) => setInput(e.target.value)}
-                    />
-
-                    {discount ? (
-                      <button
-                        onClick={(e) => {
-                          e.preventDefault();
-                          setDiscount(false);
-                          toast.success("discount removed");
-                        }}
-                        className="px-4 py-1 border border-red-800 rounded-2xl bg-red-700 text-white text-xs"
-                      >
-                        remove
-                      </button>
-                    ) : (
-                      <button
-                        onClick={handleSubmit}
-                        className="px-4 py-2 border border-orange-800 rounded-xl bg-orange-200"
-                      >
-                        {" "}
-                        apply
-                      </button>
-                    )}
-                  </form>
-                  <p>{}</p>
-                  <button
-                    className="px-6 border-2 border-orange-600 bg-orange-400 text-white rounded-3xl py-2 flex "
-                    onClick={() => setShowPopup(true)}
-                  >
-                    Check out <span className="mx-4">₹{sum().discountSum}</span>{" "}
-                  </button>
-                </div>
-              </div>
-            </tr>
+            </tr> */}
           </tbody>
         </table>
+        <div className=" fixed bottom-0 left-0 z-40 p-4 md:p-10 w-full border-t rounded-t-lg shadow flex flex-col md:flex-row justify-start md:justify-end items-start md:items-center gap-4 md:gap-10  bg-[#fff8eb]">
+          <p className=" w-full md:w-auto  whitespace-nowrap text-center text-base md:text-xl font-bold">
+            <span className="text-xs md:text-sm mx-4">Total amount</span> ₹
+            {discount ? (
+              <span className="gap-2">
+                <span className="line-through">{sum().actualSum}</span>{" "}
+                <span className="italic">₹{sum().discountSum}</span>{" "}
+              </span>
+            ) : (
+              sum().actualSum
+            )}
+          </p>
+          <div className="  w-full md:w-auto   flex   flex-col md:flex-row justify-center md:justify-end items-center gap-4 md:gap-10 ">
+            <div className="text-xs">
+              <p>* use "10PERDISC" for 10% off</p>
+              <p>* use "10OFFDISC" for 10₹ off </p>
+            </div>
+            <form className="flex gap-4">
+              <input
+                type="text"
+                className="bg-transparent border-b-2 border-black focus:border-none p-2 w-[120px]"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+              />
+
+              {discount ? (
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setDiscount(false);
+                    toast.success("discount removed");
+                  }}
+                  className="px-4 py-1 border border-red-800 rounded-2xl bg-red-700 text-white text-xs"
+                >
+                  remove
+                </button>
+              ) : (
+                <button
+                  onClick={handleSubmit}
+                  className="px-4 py-2 border border-orange-800 rounded-xl bg-orange-200"
+                >
+                  {" "}
+                  apply
+                </button>
+              )}
+            </form>
+            <p>{}</p>
+            <button
+              className="px-6 border-2 border-orange-600 bg-orange-400 text-white rounded-3xl py-2 md:py-4 flex "
+              onClick={() => setShowPopup(true)}
+            >
+              Check out <span className="mx-4">₹{sum().discountSum}</span>{" "}
+            </button>
+          </div>
+        </div>
       </div>
     );
   }

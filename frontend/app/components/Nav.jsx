@@ -21,11 +21,11 @@ const Nav = () => {
       to: "/",
       icon: <GoHome />,
     },
-    {
-      name: "Products",
-      to: "/products",
-      icon: <FaStoreAlt />,
-    },
+    // {
+    //   name: "Products",
+    //   to: "/products",
+    //   icon: <FaStoreAlt />,
+    // },
 
     // {
     //   name: "Wishlist",
@@ -136,7 +136,7 @@ const Nav = () => {
     );
   }
   return (
-    <nav className="  flex gap-2 md:gap-8 sm:px-4 md:px-16 text-orange-500 justify-center items-center ">
+    <nav className="  flex gap-2 md:gap-8 sm:px-4 md:px-16 text-orange-500 justify-center items-center  text-xs md:text-base">
       <Link
         href={"/signup"}
         className=" sm:text-sm md:text-lg font-bold bg-slate-50 rounded-3xl border border-orange-700 px-4 py-2 hover:text-neutral-50 transition-all duration-200 hover:bg-orange-700 "

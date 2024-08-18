@@ -6,6 +6,7 @@ import Header from "@/app/components/Header";
 import { BACKEND_SERVER } from "@/app/constants/Constant";
 import MyContext from "@/app/context/MyContext";
 import axios from "axios";
+import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -94,7 +95,7 @@ const page = () => {
 
   if (product && authenticated) {
     return (
-      <div className="pt-28 bg-[#fff8eb] w-screen h-screen overflow-y-scroll  flex flex-col justify-center gap-10 items-center">
+      <div className="pt-[100px] md:pt-[230px] bg-[#fff8eb] w-screen h-screen overflow-y-scroll  flex flex-col justify-start text-sm md:text-base gap-10 items-center">
         <Header />
         <div className="w-4/5  bg-orange-600 rounded-2xl  flex flex-col md:flex-row justify-start items-start p-8 gap-8">
           <div className="w-full md:w-1/2 aspect-[5/4]">
@@ -106,11 +107,15 @@ const page = () => {
           </div>
           <div className="w-full flex-1  md:w-1/2 aspect-[5/4] flex flex-col justify-between items-start gap-4 sm:p-2 md:p-6">
             <div className="w-full flex flex-col justify-start items-start gap-2">
-              <h2 className="text-3xl font-bold text-white">{product.title}</h2>
-              <p className="text-lg text-orange-100 font-light">
+              <h2 className="text-xl md:text-3xl font-bold text-white">
+                {product.title}
+              </h2>
+              <p className=" text-xs md:text-lg text-orange-100 font-light">
                 {product.description}
               </p>
-              <p className=" text-white text-2xl px-4 m-4">₹{product.price}</p>
+              <p className=" text-white text-sm md:text-2xl px-4 m-4">
+                ₹{product.price}
+              </p>
             </div>
 
             <div className="w-full flex flex-col flex-1  justify-end pt-8">
@@ -118,17 +123,18 @@ const page = () => {
               {!existsInCart(product.productId) ? (
                 <button
                   onClick={() => handleAddtoCart(product)}
-                  className="w-full rounded-2xl px-6 py-3 hover:scale-y-110 transition-all duration-200 border border-orange-200 font-bold text-2xl text-orange-500 bg-orange-100 flex gap-1 justify-center items-center"
+                  className="w-full rounded-2xl px-6 py-4 hover:scale-y-110 transition-all duration-200 border border-orange-200 font-bold text-2xl text-orange-500 bg-orange-100 flex gap-1 justify-center items-center"
                 >
                   Add to cart{" "}
                 </button>
               ) : (
-                <button
-                  onClick={() => router.push("/cart")}
-                  className="border-2 border-orange-400 bg-orange-200 px-4 py-2 rounded-3xl text-orange-500  "
+                <Link
+                  href={"/cart"}
+                  // onClick={() => router.push("/cart")}
+                  className="border-2 border-orange-400 bg-orange-200 px-4 py-4 rounded-3xl text-orange-500   flex justify-center items-center"
                 >
                   Go to cart{" "}
-                </button>
+                </Link>
               )}
             </div>
           </div>

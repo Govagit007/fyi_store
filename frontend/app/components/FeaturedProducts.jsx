@@ -110,9 +110,9 @@ const FeaturedProducts = () => {
           <div className="w-full grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 px-0 md:px-6  ">
             {products?.map((p, i) => {
               return (
-                <Link
-                  href={authenticated ? `/product/${p.productId}` : "/login"}
-                  // onClick={() => handleProductClick(p.productId)}
+                <div
+                  // href={authenticated ? `/product/${p.productId}` : "/login"}
+                  onClick={() => handleProductClick(p.productId)}
                   className="bg-orange-100 hover:bg-orange-200 border aspect-[7/8] rounded-xl overflow-hidden p-6 hover:scale-110 transition-all duration-300  flex flex-col justify-start items-start group gap-2"
                   key={i}
                 >
@@ -142,7 +142,7 @@ const FeaturedProducts = () => {
                       )}
                     </div>
                   </div>
-                </Link>
+                </div>
               );
             })}
           </div>
